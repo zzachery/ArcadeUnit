@@ -6,8 +6,6 @@ public class Car {
     private int width, height;
     private int speed;
 
-    Random rand = new Random();
-
     public Car(int x, int y, int width, int height, int speed) {
         this.x = x;
         this.y = y;
@@ -16,6 +14,7 @@ public class Car {
         this.speed = speed;
     }
 
+    // Move across the screen from left to right
     public void move() {
         x += speed;
         if (x > 800) {
@@ -23,12 +22,13 @@ public class Car {
         }
     }
 
+    // Draw car as rectangle
     public void draw(Graphics g) {
         g.setColor(Color.RED);
         g.fillRect(x, y, width, height);
     }
 
-    public Rectangle getBounds() {
+    public Rectangle getHitbox() {
         return new Rectangle(x, y, width, height);
     }
 }
