@@ -10,7 +10,7 @@ public class Game extends JPanel implements ActionListener {
     private Timer timer;
     private Player player;
     private ArrayList<Car> cars;
-    private Terrain terrain;
+    private ArrayList<Terrain> terrains;
 
     private int level;
 
@@ -24,11 +24,12 @@ public class Game extends JPanel implements ActionListener {
         setBackground(Color.GREEN); // Background color
 
         player = new Player(400, 580);
-        cars = new ArrayList<>();
-        terrain = new Terrain();
+        cars = new ArrayList<Car>();
+        terrains = new ArrayList<Terrain>();
         level = 1;
         rand = new Random();
 
+        generateTerrain();
         generateCars();
 
         addKeyListener(new KeyAdapter() {
@@ -47,13 +48,14 @@ public class Game extends JPanel implements ActionListener {
         // Movement
         player.move();
         for (Car car : cars) {
-            car.move();
+            car.move(level);
         }
 
         // Check if player is at the end of a level
         if (player.getY() <= 0) {
             level++;
             player.resetPosition();
+            generateTerrain();
             generateCars();
         }
 
@@ -84,11 +86,13 @@ public class Game extends JPanel implements ActionListener {
         super.paintComponent(g);
 
         // Draw level objects
-        terrain.draw(g);
-        player.draw(g);
-        for (Car car : cars) {
-            car.draw(g);
+        for (Terrain t : terrains) {
+            t.draw(g);
         }
+        for (Car c : cars) {
+            c.draw(g);
+        }
+        player.draw(g);
 
         // Draw level text
         g.setColor(Color.BLACK);
@@ -98,12 +102,46 @@ public class Game extends JPanel implements ActionListener {
     // Spawn cars
     private void generateCars() {
         cars.clear();
-        for (int i = 0; i < 4; i++) { // Across each lane
-            int y = 465 - 120 * i;
+        for (Terrain t : terrains) { // Across each lane
+            int y = t.getY() + 5;
             int speed = (int) (rand.nextInt(3) + 1 + Math.pow(level,2)/4); // Calculate speed: exponentially increase over time
+            int opposite = rand.nextInt(1,3);
             for (int j = 0; j < rand.nextInt(1, level+1); j++) { // Random amount of cars on each road piece
-                cars.add(new Car(rand.nextInt(800), y, 80, 30, speed));
+                if (opposite == 1) { // Right to left
+                    cars.add(new Car(800-rand.nextInt(800), y, 80, 30, -1*speed));
+                } else { // Left to right
+                    cars.add(new Car(rand.nextInt(800), y, 80, 30, speed));
+                }
             }
         }
+    }
+
+    // Spawn road pieces
+    private void generateTerrain() {
+        terrains.clear();
+        int pos = 460;
+        for(int i = 1; i < 12; i++) {
+            int coinflip = rand.nextInt(1,3);
+            if (coinflip == 1) { // Spawn road
+                terrains.add(new Terrain(pos));
+            }
+            pos-=40;
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                // Create new frame
+                JFrame frame = new JFrame("frogger");
+                Game game = new Game();
+                frame.add(game);
+                frame.setSize(800, 620);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setVisible(true);
+                // Start game
+                game.start();
+            }
+        });
     }
 }
