@@ -11,6 +11,8 @@ public class Game extends JPanel implements ActionListener {
     private Player player;
     private ArrayList<Car> cars;
     private ArrayList<Terrain> terrains;
+    private int time;
+    private String timeString;
 
     private int level;
 
@@ -55,6 +57,8 @@ public class Game extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+        time+=20;
+        timeString=(time/60000)+":"+((time/1000)%60)+":"+(time-(time/1000)*1000);
         // Movement
         player.move();
         for (Car car : cars) {
@@ -77,7 +81,7 @@ public class Game extends JPanel implements ActionListener {
                 timer.stop();
                 // Display retry screen
                 Object[] options = {"yes", "no"};
-                var selection = JOptionPane.showOptionDialog(this, "game over!\nlevels completed: " + level + "\nretry?", "game over",
+                var selection = JOptionPane.showOptionDialog(this, "game over!\nlevels completed: " + level + "\ntotal time: "+timeString+"\nretry?", "game over",
                         0, 2, null, options, options[0]);
                 if (selection == 0) {
                     createNewGame();
@@ -90,6 +94,12 @@ public class Game extends JPanel implements ActionListener {
 
         // Repaint all objects
         repaint();
+        String OS = System.getProperty("os.name");
+        if (OS.indexOf("nix") >= 0
+        || OS.indexOf("nux") >= 0
+        || OS.indexOf("aix") > 0) {
+            Toolkit.getDefaultToolkit().sync();
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -108,6 +118,7 @@ public class Game extends JPanel implements ActionListener {
         // Draw level text
         g.setColor(new Color(84, 90, 97));
         g.drawString("level: " + level, 10, 20);
+        g.drawString("time: " + timeString, 700, 20);
     }
 
     // Spawn cars
