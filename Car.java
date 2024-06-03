@@ -35,7 +35,7 @@ public class Car {
             speed = (int) (rand.nextInt(3) + 1 + Math.pow(level,2)/10); // Reset speed after car clears
             x = -width;
         } else if (x < -200) {
-            speed = -1* (int) (rand.nextInt(3) + 1 + Math.pow(level,2)/10);
+            speed = -1 * (int) (rand.nextInt(3) + 1 + Math.pow(level,2)/10);
             x = 880-width;
         }
     }

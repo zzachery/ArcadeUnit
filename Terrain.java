@@ -19,6 +19,6 @@ public class Terrain {
 
         g.setColor(new Color(64, 68, 74));
         g.fillRect(0, y, 800, 3);
-        g.fillRect(0, y+37, 800, 3);
+        g.fillRect(0, y + 37, 800, 3);
     }
 }

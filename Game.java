@@ -119,7 +119,7 @@ public class Game extends JPanel implements ActionListener {
             int opposite = rand.nextInt(1,3);
             for (int j = 0; j < rand.nextInt(1, level + 2); j++) { // Random amount of cars on each road piece
                 if (opposite == 1) { // Right to left
-                    cars.add(new Car(rand.nextInt(800) + 10, y, 80, 30, -1*speed));
+                    cars.add(new Car(rand.nextInt(800) + 10, y, 80, 30, -1 * speed));
                 } else { // Left to right
                     cars.add(new Car(rand.nextInt(800) + 10, y, 80, 30, speed));
                 }
