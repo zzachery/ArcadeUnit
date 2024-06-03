@@ -35,7 +35,7 @@ public class Player {
 
     // Draw player on screen
     public void draw(Graphics g) {
-        g.setColor(Color.BLUE);
+        g.setColor(Color.WHITE);
         g.fillOval(x, y, SIZE, SIZE);
     }
 

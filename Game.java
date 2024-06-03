@@ -20,10 +20,11 @@ public class Game extends JPanel implements ActionListener {
 
     // Clears to level 1 and resets player
     public void createNewGame() {
-        setFocusable(true);
-        setBackground(Color.GREEN); // Background color
-
         player = new Player(400, 580);
+
+        setFocusable(true);
+        setBackground(new Color(141, 255, 92)); // Background color
+
         cars = new ArrayList<Car>();
         terrains = new ArrayList<Terrain>();
         level = 1;
@@ -38,6 +39,15 @@ public class Game extends JPanel implements ActionListener {
             }
         });
         timer = new Timer(20, this);
+    }
+
+    public void draw(Graphics g) {
+        g.setColor(new Color(130, 247, 79));
+        int pos = 540;
+        for(int i = 1; i < 14; i++) {
+            g.fillRect(0, pos, 800, 40);
+            pos -= 80;
+        }
     }
 
     public void start() {
@@ -84,6 +94,7 @@ public class Game extends JPanel implements ActionListener {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        draw(g);
 
         // Draw level objects
         for (Terrain t : terrains) {
@@ -95,7 +106,7 @@ public class Game extends JPanel implements ActionListener {
         player.draw(g);
 
         // Draw level text
-        g.setColor(Color.BLACK);
+        g.setColor(new Color(84, 90, 97));
         g.drawString("level: " + level, 10, 20);
     }
 
@@ -104,13 +115,13 @@ public class Game extends JPanel implements ActionListener {
         cars.clear();
         for (Terrain t : terrains) { // Across each lane
             int y = t.getY() + 5;
-            int speed = (int) (rand.nextInt(3) + 1 + Math.pow(level,2)/4); // Calculate speed: exponentially increase over time
+            int speed = (int) (rand.nextInt(3) + 1 + Math.pow(level,2)/10); // Calculate speed: exponentially increase over time
             int opposite = rand.nextInt(1,3);
-            for (int j = 0; j < rand.nextInt(1, level+1); j++) { // Random amount of cars on each road piece
+            for (int j = 0; j < rand.nextInt(1, level + 2); j++) { // Random amount of cars on each road piece
                 if (opposite == 1) { // Right to left
-                    cars.add(new Car(800-rand.nextInt(800), y, 80, 30, -1*speed));
+                    cars.add(new Car(rand.nextInt(800) + 10, y, 80, 30, -1*speed));
                 } else { // Left to right
-                    cars.add(new Car(rand.nextInt(800), y, 80, 30, speed));
+                    cars.add(new Car(rand.nextInt(800) + 10, y, 80, 30, speed));
                 }
             }
         }
@@ -121,7 +132,11 @@ public class Game extends JPanel implements ActionListener {
         terrains.clear();
         int pos = 460;
         for(int i = 1; i < 12; i++) {
-            int coinflip = rand.nextInt(1,3);
+            int bound = 10 - level;
+            if (bound <=4) {
+                bound = 4;
+            }
+            int coinflip = rand.nextInt(1, bound);
             if (coinflip == 1) { // Spawn road
                 terrains.add(new Terrain(pos));
             }

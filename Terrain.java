@@ -14,15 +14,11 @@ public class Terrain {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.BLACK);
+        g.setColor(new Color(84, 90, 97));
         g.fillRect(0, y, 800, 40);
 
-
-////        int startPos = 460;
-//        // Draw 4 rectangles as roads on the screen
-//        for (int i = 1; i < numRoads; i++) {
-//            g.fillRect(0, roadLocs.get(i), 800, 40);
-////            startPos-=120; // Offset between each road piece
-//        }
+        g.setColor(new Color(64, 68, 74));
+        g.fillRect(0, y, 800, 3);
+        g.fillRect(0, y+37, 800, 3);
     }
 }
