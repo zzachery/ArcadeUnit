@@ -1,6 +1,9 @@
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -79,10 +82,12 @@ public class Game extends JPanel implements ActionListener {
             // Player collides
             if (playerHitbox.intersects(car.getHitbox())) {
                 timer.stop();
+                time = 0;
+
                 // Display retry screen
-                Object[] options = {"yes", "no"};
-                var selection = JOptionPane.showOptionDialog(this, "game over!\nlevels completed: " + level + "\ntotal time: "+timeString+"\nretry?", "game over",
-                        0, 2, null, options, options[0]);
+                Object[] options = {"retry", "quit"};
+                var selection = JOptionPane.showOptionDialog(this, "game over!\nlevels completed: " + level + "\ntotal time: "+timeString, "game over",
+                        0, 1, null, options, options[0]);
                 if (selection == 0) {
                     createNewGame();
                     start();
@@ -117,8 +122,8 @@ public class Game extends JPanel implements ActionListener {
 
         // Draw level text
         g.setColor(new Color(84, 90, 97));
-        g.drawString("level: " + level, 10, 20);
-        g.drawString("time: " + timeString, 700, 20);
+        g.drawString("level: " + level, 10, 575);
+        g.drawString("time: " + timeString, 700, 575);
     }
 
     // Spawn cars
@@ -141,7 +146,8 @@ public class Game extends JPanel implements ActionListener {
     // Spawn road pieces
     private void generateTerrain() {
         terrains.clear();
-        int pos = 460;
+        terrains.add(new Terrain(460));
+        int pos = 420;
         for(int i = 1; i < 12; i++) {
             int bound = 10 - level;
             if (bound <=4) {

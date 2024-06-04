@@ -44,15 +44,19 @@ public class Player {
         int key = e.getKeyCode();
         int moveConstant = 40; // Move by player size for accurate grid movement
         if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) { // Change direction left
+            Toolkit.getDefaultToolkit().beep();
             dx = -1 * moveConstant;
         }
         if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) { // Right
+            Toolkit.getDefaultToolkit().beep();
             dx = moveConstant;
         }
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) { // Up
+            Toolkit.getDefaultToolkit().beep();
             dy = -1 * moveConstant;
         }
         if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) { // Down
+            Toolkit.getDefaultToolkit().beep();
             dy = moveConstant;
         }
     }
